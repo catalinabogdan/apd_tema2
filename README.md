@@ -1,40 +1,25 @@
 # tema2
-BOGDAN ELENA CATALINA
-331 CC
 
-    Pentru realizarea acestui proiect a fost necesara actualizarea claselor
-    MyHost si MyDispatcher, in care am explicitat metodele abstracte ale 
-    claselor parinte.
+For the realization of this project, it was necessary to update the classes MyHost and MyDispatcher, 
+where I specified the abstract methods of the parent classes.
 
-    Planificarea algoritmilor de distribuire a taskurilor catre noduri se
-    realizeaza in clasa MyDispatcher, unde se diferentiaza 4 tipuri de algoritmi:
-        ROUNTD_ROBIN - trimite taskuri pe rand de la primul la ultimul nod
-        SHORTEST_QUEUE - alege nodul cu cele mai putine taskuri in coada si in
-                        executie cu ajutorul metodei getQueueSize()
-        SIZE_INTERVAL_TASK_ASSIGNMENT - distribuie taskurile in functie de tipul
-                        acestora catre nodurile specifice
-        LEAST WORK LEFT - trimite taskuri nodului care termina executia cel mai
-                        curand, cu ajutorul metodei getWorkLeft()
-    
-    Pentru a tine in evidenta taskurile si a realiza o sincronizare automata 
-    este folosita o coada blocanta de prioritati, ce se construieste pe baza 
-    unui comparator : aseaza in coada taskurile descrescator in functie de
-    prioritati si crescator dupa start time in cazul in care au prioritati egale.
+The task distribution algorithms are planned in the MyDispatcher class, where four types of algorithms are differentiated:
 
-    Metoda addTask asigura adaugarea in coada si setarea timpului ramas de parcurs
-    pentru fiecare task ca fiind durata totala a acestuia.
-    In metoda run se creeaza o bucla infinita in functie de constanta runnable, 
-    variabila de tip bool, setata true, ce este marcata ca fiind falsa in shutdown.
+- ROUND_ROBIN: sends tasks in a round-robin manner from the first to the last node.
+- SHORTEST_QUEUE: selects the node with the fewest tasks in the queue and in execution using the getQueueSize() method.
+- SIZE_INTERVAL_TASK_ASSIGNMENT: distributes tasks to specific nodes based on their type.
+- LEAST WORK LEFT: sends tasks to the node that finishes execution soonest using the getWorkLeft() method.
 
-    Sunt extrase taskuri din coada si executate in functie de caracteristicele
-    acestora : preemptibilitate. Daca un task nu este preemptibil atunci executarea
-    lui nu poate fi intrerupta, asa ca Threadul asteapta periodic cat timp nu s-a 
-    consumat tot timpul necesar finalizarii.
+To keep track of tasks and perform automatic synchronization, a priority blocking queue is used, which is constructed based on a comparator:
+it places tasks in the queue in descending order of priority and ascending order of start time in case of equal priorities.
 
-    Pe de alta parte, daca are setat acest camp ca fiind true, dupa fiecare incheiere
-    a perioadei de sleep este verificat daca a fost adaugat in coada un task cu 
-    prioritate mai mare decat a celui curent, caz in care se este pusa pe pauza 
-    executia lui, este adaugat in coada si incepe executia taskului de prioritate
-    superioara.
+The addTask method ensures adding to the queue and setting the remaining time to traverse for each task as its total duration. In the run method,
+an infinite loop is created based on the constant 'runnable', a boolean variable set to true, which is marked as false on shutdown.
+
+Tasks are extracted from the queue and executed based on their characteristics: preemptibility. If a task is not preemptible, its execution cannot be
+interrupted, so the thread waits periodically until all the necessary time for completion has been consumed.
+
+On the other hand, if this field is set to true, after each sleep period, it is checked if a task with higher priority than the current one has been
+added to the queue, in which case the execution is paused, it is added to the queue, and the execution of the higher-priority task begins.
 
     
